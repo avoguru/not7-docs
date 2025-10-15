@@ -22,7 +22,38 @@
 }
 ```
 
-## Pattern 2: Linear Pipeline (Multi-Step)
+## Pattern 2: ReAct (Iterative Reasoning)
+
+**Use case:** Complex problem solving, deep research, strategic planning
+
+```json
+{
+  "version": "1.0.0",
+  "goal": "Solve complex problem with reasoning",
+  "nodes": [
+    {
+      "id": "think",
+      "type": "react",
+      "react_goal": "Solve this logic puzzle: A farmer needs to cross a river with a fox, chicken, and grain. The boat can only carry one item at a time. Fox eats chicken if alone. Chicken eats grain if alone. How to get everything across?",
+      "max_iterations": 4
+    }
+  ],
+  "routes": [
+    {"from": "start", "to": "think"},
+    {"from": "think", "to": "end"}
+  ]
+}
+```
+
+**How it executes:**
+```
+Iteration 1: Analyze problem → Initial solution
+Iteration 2: Critique → Refined solution
+Iteration 3: Continue refining
+Iteration 4: FINAL solution
+```
+
+## Pattern 3: Linear Pipeline (Multi-Step)
 
 **Use case:** Data processing, analysis, transformation
 

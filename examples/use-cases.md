@@ -2,6 +2,38 @@
 
 Practical applications for NOT7 agents.
 
+## ReAct Reasoning Use Cases
+
+### Strategic Planning
+
+```json
+{
+  "type": "react",
+  "react_goal": "Design a scalable microservices architecture for an e-commerce platform. Consider: service boundaries, data consistency, communication patterns, and deployment strategy.",
+  "max_iterations": 6
+}
+```
+
+### Problem Diagnosis
+
+```json
+{
+  "type": "react",
+  "react_goal": "Analyze this error log and determine root cause. Consider: timing, dependencies, recent changes, and system state.",
+  "max_iterations": 5
+}
+```
+
+### Decision Making
+
+```json
+{
+  "type": "react",
+  "react_goal": "Evaluate build vs buy decision for customer analytics platform. Consider: cost, time, features, maintenance, and strategic fit.",
+  "max_iterations": 4
+}
+```
+
 ## Customer Support
 
 **Ticket Triage Agent**

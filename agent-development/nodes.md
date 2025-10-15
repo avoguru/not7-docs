@@ -26,9 +26,53 @@ Nodes are the building blocks of agents. Each node does ONE thing.
 
 ## Node Types
 
-### LLM Node (Currently Implemented)
+### LLM Node
 
 Processes input using a Language Model.
+
+### ReAct Node
+
+Iterative reasoning with self-critique and refinement. The agent thinks through problems in multiple steps until reaching a satisfactory answer.
+
+**Required fields:**
+- `id` - Unique ID
+- `type` - Must be `"react"`
+- `react_goal` - What to research/solve
+
+**Optional fields:**
+- `name` - Human-readable name
+- `max_iterations` - Maximum thinking iterations (default: 5)
+- `thinking_prompt` - Custom thinking guidance
+- `output_format` - Output format (default: text)
+- `llm` - Override global LLM config
+
+**Example:**
+```json
+{
+  "id": "deep_thinker",
+  "name": "Problem Solver",
+  "type": "react",
+  "react_goal": "Solve the river crossing puzzle: farmer with fox, chicken, and grain",
+  "max_iterations": 4,
+  "output_format": "text"
+}
+```
+
+**How it works:**
+1. Iteration 1: Initial thinking
+2. Iteration 2: Self-critique and refinement
+3. Iteration 3-N: Continue refining
+4. Stops when satisfied (uses "FINAL:" marker) or reaches max_iterations
+
+**Tracing:**
+Every execution includes a `react_trace` showing:
+- Number of iterations
+- Each thinking step
+- Time and cost per iteration
+
+### LLM Node
+
+Simple single-pass LLM processing.
 
 **Required fields:**
 - `id` - Unique ID

@@ -39,6 +39,7 @@
 
 - **[Single Node](examples/single-node.md)** - Simple examples
 - **[Multi-Node](examples/multi-node.md)** - Complex pipelines
+- **[ReAct Reasoning](examples/react-reasoning.md)** - Iterative thinking ⭐ New!
 - **[Use Cases](examples/use-cases.md)** - Real-world scenarios
 
 ---
