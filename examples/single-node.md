@@ -101,15 +101,16 @@ not7 run examples/poem-generator.json
 }
 ```
 
-## When to Use Single Node
+## Applicable Tasks
 
-- Simple transformations
-- Direct Q&A
+Single node agents work for:
+- Text transformation
+- Question answering
 - Content generation
-- Classification tasks
+- Classification
 - Data extraction
 
-If you need multi-step reasoning, use [multi-node agents](multi-node.md).
+For multi-step processing, see [multi-node agents](multi-node.md).
 
 ---
 

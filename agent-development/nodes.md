@@ -104,15 +104,17 @@ The prompt is your instruction to the LLM. Be specific about:
 "For example: {\"theme\": \"pricing\", \"sentiment\": \"negative\"}"
 ```
 
-**Good prompt:**
+**Specific prompt:**
 ```json
 "prompt": "You will receive customer feedback as text. Extract 3-5 key themes. Return as JSON array of strings. Example: [\"pricing\", \"performance\", \"support\"]. Be concise."
 ```
 
-**Bad prompt:**
+**Vague prompt:**
 ```json
 "prompt": "analyze this"
 ```
+
+Specific prompts with clear output formats produce better results.
 
 ### Input/Output Formats
 

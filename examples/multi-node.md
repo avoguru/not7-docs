@@ -137,20 +137,6 @@ Total: 17,080ms | $0.032
 }
 ```
 
-## Benefits of Multi-Node
-
-**Modularity:**
-Each node has one job. Easy to test and modify.
-
-**Reusability:**
-Extract a node, use it in multiple agents.
-
-**Clarity:**
-Read the nodes, understand the process.
-
-**Evolution:**
-Change one node without touching others.
-
 ## Design Tips
 
 **Break down complex tasks:**

@@ -60,14 +60,6 @@ File watcher:
 2. Executes agent
 3. Moves to `deploy/processed/`
 
-## Git-Friendly
-
-All data in files means:
-- Easy to version control
-- Simple to backup
-- No database migration
-- Works with any file sync tool
-
 ---
 
 [← Execution Model](execution-model.md) | [Deployment →](../deployment/server-mode.md)

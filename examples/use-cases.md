@@ -96,24 +96,6 @@ Practical applications for NOT7 agents.
 4. Suggest fixes
 ```
 
-## Why NOT7 for These Use Cases?
-
-**Repeatable:**
-- Deploy once, run many times
-- Consistent results
-
-**Versionable:**
-- Improve prompts over time
-- Track what changed (git diff)
-
-**Transparent:**
-- Read the JSON, understand the process
-- Debug by reading specs
-
-**API-driven:**
-- Integrate with existing systems
-- Trigger from CI/CD, webhooks, cron
-
 ---
 
 [← Multi-Node](multi-node.md) | [Back to Docs Home](../README.md)

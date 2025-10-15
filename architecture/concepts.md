@@ -11,19 +11,10 @@ Everything is configuration:
 - Runtime configured via `not7.conf`
 - No programming required
 
-### Spec-Driven vs Code-Driven
+### Specification-Driven
 
-**Code-driven (LangGraph, LangChain):**
-```python
-def my_agent(state):
-    result = llm.invoke(prompt)
-    return {"output": result}
-    
-graph.add_node("step1", my_agent)
-graph.add_edge("step1", "step2")
-```
+Agents are JSON specifications:
 
-**Spec-driven (NOT7):**
 ```json
 {
   "nodes": [{"id": "step1", "type": "llm", "prompt": "..."}],
@@ -31,7 +22,7 @@ graph.add_edge("step1", "step2")
 }
 ```
 
-Same functionality. No code.
+No code. Just configuration.
 
 ### Versioning as Intelligence
 
@@ -46,17 +37,15 @@ Evolution is visible. Changes are traceable.
 
 ### Transparency as Debuggability
 
-**Black box:**
+When execution fails:
 ```
-Agent fails → Debug Python code → Find hidden state issue
-```
-
-**Transparent:**
-```
-Agent fails → Read JSON spec → See exact flow → Fix prompt
+1. Read the JSON spec
+2. See exact node flow
+3. Check prompt and configuration
+4. Review logs
 ```
 
-When something fails, you read the spec, not code.
+Debugging is reading configuration, not code.
 
 ### File-Based Storage
 
@@ -74,32 +63,16 @@ Each execution is independent:
 - Clean, predictable behavior
 - Easy to reason about
 
-## Learning from Integration Platforms
+## Design Principles
 
-NOT7 brings ESB/ETL philosophy to agents:
-
-**What worked:**
-- Transparent XML/JSON definitions
-- File-based configuration
-- Observable execution
-- Version control friendly
-
-**What we evolved:**
-- JSON (simpler than XML)
-- LLM-native design
-- API-first architecture
-- Single binary (easier than Java)
-
-## The NOT7 Approach
-
-**Simple > Complex**  
-Linear pipelines, not complex graphs.
-
-**Transparent > Clever**  
-Readable specs, not hidden logic.
-
-**Declarative > Imperative**  
+**Declarative**  
 Describe WHAT, not HOW.
+
+**Transparent**  
+Readable specs, observable execution.
+
+**File-Based**  
+No database required. Everything in files.
 
 ---
 
