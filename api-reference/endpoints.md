@@ -1,51 +1,214 @@
 # API Endpoints
 
-Quick reference for all NOT7 REST API endpoints.
+## Overview
 
-## Summary Table
+NOT7 exposes a simple REST API for agent execution and status tracking.
+
+Base URL: `http://localhost:8080/api/v1`
+
+## Endpoints
 
 | Method | Endpoint | Purpose |
 |--------|----------|---------|
-| POST | `/api/v1/agents` | Deploy agent (save) |
-| GET | `/api/v1/agents` | List all agents |
-| GET | `/api/v1/agents/{id}` | Get agent spec |
-| PUT | `/api/v1/agents/{id}` | Update agent |
-| DELETE | `/api/v1/agents/{id}` | Delete agent |
-| POST | `/api/v1/agents/{id}/run` | Execute deployed agent |
-| POST | `/api/v1/agents/run` | Execute anonymous agent |
+| POST | `/run` | Execute agent |
+| GET | `/executions` | List all executions |
+| GET | `/executions/{id}` | Get execution details |
 | GET | `/health` | Health check |
 
-## Complete Workflow Example
+## Execute Agent
+
+**Endpoint:** `POST /api/v1/run`
+
+**Request:**
 
 ```bash
-# 1. Deploy
-curl -X POST http://localhost:8080/api/v1/agents \
+curl -X POST http://localhost:8080/api/v1/run \
+  -H "Content-Type: application/json" \
   -d @agent.json
-
-# 2. List
-curl http://localhost:8080/api/v1/agents
-
-# 3. Get
-curl http://localhost:8080/api/v1/agents/my-agent
-
-# 4. Run (multiple times)
-curl -X POST http://localhost:8080/api/v1/agents/my-agent/run
-curl -X POST http://localhost:8080/api/v1/agents/my-agent/run
-curl -X POST http://localhost:8080/api/v1/agents/my-agent/run
-
-# 5. Update
-curl -X PUT http://localhost:8080/api/v1/agents/my-agent \
-  -d @agent-v2.json
-
-# 6. Delete
-curl -X DELETE http://localhost:8080/api/v1/agents/my-agent
 ```
 
-## Testing Script
+**Query Parameters:**
 
-See [examples/crud-api-examples.sh](../../not7-core/examples/crud-api-examples.sh) for a complete test suite.
+- `async=true` - Run in background (returns immediately)
+- `trace=true` - Enable live ReAct trace output
 
----
+**Response (Synchronous):**
 
-[← REST API](rest-api.md) | [Responses →](responses.md)
+```json
+{
+  "id": "exec-1697234567890",
+  "status": "completed",
+  "goal": "Generate a poem",
+  "output": "Roses are red...",
+  "duration_ms": 2850,
+  "total_cost": 0.0275,
+  "created_at": "2024-10-18T10:30:45Z",
+  "started_at": "2024-10-18T10:30:45Z",
+  "ended_at": "2024-10-18T10:30:48Z"
+}
+```
 
+**Response (Asynchronous):**
+
+```json
+{
+  "execution_id": "exec-1697234567890",
+  "status": "pending",
+  "message": "Execution started in background"
+}
+```
+
+## List Executions
+
+**Endpoint:** `GET /api/v1/executions`
+
+**Request:**
+
+```bash
+curl http://localhost:8080/api/v1/executions
+```
+
+**Response:**
+
+```json
+{
+  "executions": [
+    {
+      "id": "exec-1697234567890",
+      "goal": "Generate a poem",
+      "status": "completed",
+      "created_at": "2024-10-18T10:30:45Z",
+      "duration_ms": 2850,
+      "total_cost": 0.0275
+    },
+    {
+      "id": "exec-1697234567891",
+      "goal": "Analyze feedback",
+      "status": "running",
+      "created_at": "2024-10-18T10:31:00Z"
+    }
+  ],
+  "count": 2
+}
+```
+
+## Get Execution Details
+
+**Endpoint:** `GET /api/v1/executions/{id}`
+
+**Request:**
+
+```bash
+curl http://localhost:8080/api/v1/executions/exec-1697234567890
+```
+
+**Response:**
+
+```json
+{
+  "id": "exec-1697234567890",
+  "status": "completed",
+  "goal": "Generate a poem",
+  "output": "Roses are red...",
+  "duration_ms": 2850,
+  "total_cost": 0.0275,
+  "created_at": "2024-10-18T10:30:45Z",
+  "started_at": "2024-10-18T10:30:45Z",
+  "ended_at": "2024-10-18T10:30:48Z",
+  "metadata": {
+    "node_results": [
+      {
+        "node_id": "generate",
+        "status": "success",
+        "execution_time_ms": 2850,
+        "cost": 0.0275
+      }
+    ]
+  }
+}
+```
+
+## Health Check
+
+**Endpoint:** `GET /health`
+
+**Request:**
+
+```bash
+curl http://localhost:8080/health
+```
+
+**Response:**
+
+```json
+{
+  "status": "healthy",
+  "server": "NOT7"
+}
+```
+
+## Error Responses
+
+All errors return standard format:
+
+```json
+{
+  "status": "error",
+  "error": "Error message here"
+}
+```
+
+Common HTTP status codes:
+
+- `400` - Bad Request (invalid JSON, validation failed)
+- `404` - Not Found (execution ID doesn't exist)
+- `500` - Internal Server Error (execution failed)
+
+## Execution Status
+
+Status values:
+
+- `pending` - Queued for execution
+- `running` - Currently executing
+- `completed` - Finished successfully
+- `failed` - Execution failed
+
+## Examples
+
+### Synchronous Execution
+
+```bash
+curl -X POST http://localhost:8080/api/v1/run \
+  -H "Content-Type: application/json" \
+  -d '{
+    "version": "1.0.0",
+    "goal": "Generate a poem",
+    "nodes": [{
+      "id": "generate",
+      "type": "llm",
+      "prompt": "Write a short poem about AI"
+    }],
+    "routes": [
+      {"from": "start", "to": "generate"},
+      {"from": "generate", "to": "end"}
+    ]
+  }'
+```
+
+### Async Execution with Status Check
+
+```bash
+# Submit
+EXEC_ID=$(curl -X POST "http://localhost:8080/api/v1/run?async=true" \
+  -H "Content-Type: application/json" \
+  -d @agent.json | jq -r '.execution_id')
+
+# Check status
+curl http://localhost:8080/api/v1/executions/$EXEC_ID
+```
+
+### List Recent Executions
+
+```bash
+curl http://localhost:8080/api/v1/executions | jq '.executions[:5]'
+```

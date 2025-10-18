@@ -1,59 +1,146 @@
-# Quick Start (5 Minutes)
+# Quick Start
 
-## 1. Download & Setup (2 min)
+## Prerequisites
+
+- Go 1.21+ (to build from source)
+- OpenAI API key
+- macOS, Linux, or Windows
+
+## Installation
+
+### Option 1: Download Binary
 
 ```bash
-# Download
+# macOS (ARM)
 curl -L https://github.com/not7/core/raw/main/dist/not7-darwin-arm64 -o not7
 chmod +x not7
 
-# Configure
-cp not7.conf.example not7.conf
-# Edit not7.conf: OPENAI_API_KEY=sk-your-key
+# macOS (Intel)
+curl -L https://github.com/not7/core/raw/main/dist/not7-darwin-amd64 -o not7
+chmod +x not7
+
+# Linux
+curl -L https://github.com/not7/core/raw/main/dist/not7-linux-amd64 -o not7
+chmod +x not7
 ```
 
-## 2. Run Your First Agent (1 min)
+### Option 2: Build from Source
+
+```bash
+git clone https://github.com/not7/core
+cd not7-core
+make build
+```
+
+## Configuration
+
+Create `not7.conf`:
+
+```bash
+cp not7.conf.example not7.conf
+```
+
+Edit with your API key:
+
+```ini
+# NOT7 Configuration
+OPENAI_API_KEY=sk-your-key-here
+OPENAI_DEFAULT_MODEL=gpt-4
+SERVER_PORT=8080
+```
+
+## Run Your First Agent
+
+### Terminal 1: Start Server
+
+```bash
+./not7 serve
+```
+
+Output:
+```
+🚀 Server listening on http://localhost:8080
+📁 Executions: ./executions
+📁 Logs: ./logs
+```
+
+### Terminal 2: Execute Agent
 
 ```bash
 ./not7 run examples/poem-generator.json
 ```
 
-**Output:** Creative poem about AI agents ✅
+Output shows the agent execution with timing and cost.
 
-## 3. Deploy via API (1 min)
+## Execution Modes
 
-Start server:
+### Synchronous (Default)
+
+Blocks until complete:
+
 ```bash
-./not7 run &
+./not7 run agent.json
 ```
 
-Deploy agent:
+### Asynchronous
+
+Returns immediately with execution ID:
+
 ```bash
-curl -X POST http://localhost:8080/api/v1/agents \
+./not7 run agent.json --async
+```
+
+Check status:
+
+```bash
+./not7 status <execution-id>
+```
+
+### With Live Trace
+
+Shows ReAct reasoning steps:
+
+```bash
+./not7 run agent.json --trace
+```
+
+## Via HTTP API
+
+Execute via cURL:
+
+```bash
+curl -X POST http://localhost:8080/api/v1/run \
   -H "Content-Type: application/json" \
-  -d @examples/poem-generator.json
+  -d @agent.json
 ```
 
-## 4. Run Multi-Node Example (1 min)
+Async execution:
 
 ```bash
-curl -X POST http://localhost:8080/api/v1/agents/run \
+curl -X POST "http://localhost:8080/api/v1/run?async=true" \
   -H "Content-Type: application/json" \
-  -d @examples/feedback-analyzer.json
+  -d @agent.json
 ```
 
-**Output:** Multi-step analysis with actionable insights ✅
+## Output Files
 
----
+After execution, find results in:
 
-## What You've Learned
+```
+executions/<execution-id>/
+├── output.txt    # Final agent output
+├── result.json   # Metadata (cost, duration, status)
+└── trace.json    # Full execution trace
+```
 
-✅ How to run agents locally  
-✅ How to deploy agents via API  
-✅ Single-node vs multi-node agents  
-✅ Server mode basics  
+Logs:
 
----
+```
+logs/<execution-id>.log
+```
 
-Next: [Agent Development →](../agent-development/overview.md)
+## Next Steps
 
+- [Agent Development](../agent-development/json-spec.md) - Create custom agents
+- [API Reference](../api-reference/rest-api.md) - HTTP API details
+- [Examples](../agent-development/examples.md) - Common patterns

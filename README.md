@@ -1,52 +1,49 @@
 # NOT7 Documentation
 
-**Config-driven agent runtime. Single binary. Declarative JSON. Zero dependencies.**
+Declarative agent runtime. Single binary. Zero external dependencies.
 
----
+## Overview
 
-## Getting Started
+NOT7 executes AI agents defined as JSON specifications. Agents consist of nodes (LLM calls, ReAct loops, tools) connected by routes. The runtime handles execution, state management, and persistence.
 
-- **[Installation](getting-started/installation.md)** - Download and setup
-- **[Quick Start](getting-started/quick-start.md)** - 5-minute tutorial
-- **[Configuration](getting-started/configuration.md)** - not7.conf reference
+## Quick Start
 
-## Agent Development
+```bash
+# Start server
+./not7 serve
 
-- **[Overview](agent-development/overview.md)** - What are agents and how they work
-- **[JSON Specification](agent-development/json-spec.md)** - Complete spec reference
-- **[Nodes](agent-development/nodes.md)** - How to define nodes ⭐ Critical
-- **[Routes](agent-development/routes.md)** - Connecting nodes
-- **[Examples](agent-development/examples.md)** - Common patterns
+# Execute agent
+./not7 run agent.json
+```
 
-## API Reference
+See [Quick Start](getting-started/quick-start.md) for details.
 
-- **[REST API](api-reference/rest-api.md)** - Complete API documentation
-- **[Endpoints](api-reference/endpoints.md)** - All endpoints with examples
-- **[Responses](api-reference/responses.md)** - Response formats & errors
+## Documentation
 
-## Architecture
+### Getting Started
+- [Installation](getting-started/installation.md) - Download and configure
+- [Quick Start](getting-started/quick-start.md) - Run your first agent
+- [Configuration](getting-started/configuration.md) - Environment setup
 
-- **[Core Concepts](architecture/concepts.md)** - Philosophy and approach
-- **[Runtime](architecture/runtime.md)** - How NOT7 works internally
-- **[Execution Model](architecture/execution-model.md)** - Node execution flow
-- **[File Structure](architecture/file-structure.md)** - Directory layout
+### Agent Development
+- [JSON Specification](agent-development/json-spec.md) - Agent structure
+- [Nodes](agent-development/nodes.md) - Execution units (LLM, ReAct, Tool)
+- [Routes](agent-development/routes.md) - Node connections
+- [Examples](agent-development/examples.md) - Common patterns
 
-## Deployment
+### API Reference
+- [REST API](api-reference/rest-api.md) - HTTP endpoints
+- [Responses](api-reference/responses.md) - Return formats
 
-- **[Server Mode](deployment/server-mode.md)** - Running as a production server
+### Architecture
+- [Execution Model](architecture/execution-model.md) - How agents run
+- [File Structure](architecture/file-structure.md) - Directory layout
+- [Runtime](architecture/runtime.md) - Internal components
 
-## Examples
+### Deployment
+- [Server Mode](deployment/server-mode.md) - Production deployment
 
-- **[Single Node](examples/single-node.md)** - Simple examples
-- **[Multi-Node](examples/multi-node.md)** - Complex pipelines
-- **[ReAct Reasoning](examples/react-reasoning.md)** - Iterative thinking ⭐ New!
-- **[Use Cases](examples/use-cases.md)** - Real-world scenarios
+## Repository
 
----
-
-## Quick Links
-
-- 🏠 [NOT7 Home](https://not7.ai)
-- 💻 [GitHub Repository](https://github.com/not7/core)
-- 💬 [Get Help](https://www.linkedin.com/in/gnanaguru/)
-
+- [NOT7 Core (Go)](https://github.com/not7/core)
+- [NOT7 Docs](https://github.com/not7/docs)
