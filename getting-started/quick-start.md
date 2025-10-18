@@ -127,7 +127,7 @@ curl -X POST "http://localhost:8080/api/v1/run?async=true" \
 After execution, find results in:
 
 ```
-deploy/executions/<execution-id>/
+executions/<execution-id>/
 ├── output.txt    # Final agent output
 └── trace.json    # Agent spec + execution metadata + trace
 ```

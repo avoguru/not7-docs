@@ -10,18 +10,17 @@ NOT7 uses file-based storage for executions and logs. No database required.
 not7-core/
 ├── not7                      # Binary
 ├── not7.conf                 # Configuration
-├── deploy/
-│   └── executions/           # Execution storage
-│       └── {execution-id}/
-│           ├── output.txt    # Final agent output
-│           └── trace.json    # Agent spec + execution metadata
+├── executions/               # Execution storage
+│   └── {execution-id}/
+│       ├── output.txt        # Final agent output
+│       └── trace.json        # Agent spec + execution metadata
 └── logs/                     # Execution logs
     └── agent-{timestamp}-{id}.log
 ```
 
 ## Execution Storage
 
-**Location:** `deploy/executions/{execution-id}/`
+**Location:** `executions/{execution-id}/`
 
 Each execution creates a directory with two files:
 
@@ -169,11 +168,10 @@ NOT7 does not automatically delete executions or logs. Implement your own retent
 Set storage locations in `not7.conf`:
 
 ```ini
-# Default: ./executions
-SERVER_DEPLOY_DIR=./deploy
+# Execution storage directory
+SERVER_EXECUTIONS_DIR=./executions
 
-# Executions stored in: {DEPLOY_DIR}/executions
-# Logs stored in: {LOG_DIR}
+# Log storage directory
 SERVER_LOG_DIR=./logs
 ```
 
