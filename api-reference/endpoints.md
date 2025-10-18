@@ -30,7 +30,7 @@ curl -X POST http://localhost:8080/api/v1/run \
 **Query Parameters:**
 
 - `async=true` - Run in background (returns immediately)
-- `trace=true` - Enable live ReAct trace output
+- `stream=true` - Stream live agent reasoning (for debugging)
 
 **Response (Synchronous):**
 

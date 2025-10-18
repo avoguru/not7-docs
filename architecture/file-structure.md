@@ -8,22 +8,22 @@ NOT7 uses file-based storage for executions and logs. No database required.
 
 ```
 not7-core/
-├── not7                # Binary
-├── not7.conf           # Configuration
-├── executions/         # Execution storage
-│   └── {execution-id}/
-│       ├── output.txt
-│       ├── result.json
-│       └── trace.json
-└── logs/              # Execution logs
-    └── {execution-id}.log
+├── not7                      # Binary
+├── not7.conf                 # Configuration
+├── deploy/
+│   └── executions/           # Execution storage
+│       └── {execution-id}/
+│           ├── output.txt    # Final agent output
+│           └── trace.json    # Agent spec + execution metadata
+└── logs/                     # Execution logs
+    └── agent-{timestamp}-{id}.log
 ```
 
 ## Execution Storage
 
-**Location:** `executions/{execution-id}/`
+**Location:** `deploy/executions/{execution-id}/`
 
-Each execution creates a directory with three files:
+Each execution creates a directory with two files:
 
 ### output.txt
 
@@ -36,32 +36,9 @@ AI agents think,
 In neural nets true.
 ```
 
-### result.json
-
-Complete execution metadata:
-
-```json
-{
-  "id": "exec-1697234567890",
-  "spec": { ... },
-  "status": "completed",
-  "created_at": "2024-10-18T10:30:45Z",
-  "started_at": "2024-10-18T10:30:45Z",
-  "ended_at": "2024-10-18T10:30:48Z",
-  "result": {
-    "output": "...",
-    "duration_ms": 2850,
-    "total_cost": 0.0275,
-    "metadata": {
-      "node_results": [...]
-    }
-  }
-}
-```
-
 ### trace.json
 
-Full agent specification with execution trace:
+Complete agent specification with execution metadata and trace:
 
 ```json
 {
@@ -70,8 +47,14 @@ Full agent specification with execution trace:
   "goal": "Generate a poem",
   "nodes": [...],
   "routes": [...],
+  "config": {...},
   "metadata": {
-    "executed_at": "2024-10-18T10:30:45Z",
+    "execution_id": "poem-generator-1697234567890",
+    "status": "completed",
+    "created_at": "2024-10-18T10:30:45Z",
+    "started_at": "2024-10-18T10:30:45Z",
+    "ended_at": "2024-10-18T10:30:48Z",
+    "duration_ms": 2850,
     "execution_time_ms": 2850,
     "total_cost": 0.0275,
     "node_results": [
@@ -80,7 +63,8 @@ Full agent specification with execution trace:
         "status": "success",
         "execution_time_ms": 2850,
         "cost": 0.0275,
-        "output": "..."
+        "input": "",
+        "output": "Roses are red..."
       }
     ]
   }

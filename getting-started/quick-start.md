@@ -96,12 +96,12 @@ Check status:
 ./not7 status <execution-id>
 ```
 
-### With Live Trace
+### With Live Streaming
 
-Shows ReAct reasoning steps:
+Stream live agent reasoning (for debugging):
 
 ```bash
-./not7 run agent.json --trace
+./not7 run agent.json --stream
 ```
 
 ## Via HTTP API
@@ -127,16 +127,15 @@ curl -X POST "http://localhost:8080/api/v1/run?async=true" \
 After execution, find results in:
 
 ```
-executions/<execution-id>/
+deploy/executions/<execution-id>/
 ├── output.txt    # Final agent output
-├── result.json   # Metadata (cost, duration, status)
-└── trace.json    # Full execution trace
+└── trace.json    # Agent spec + execution metadata + trace
 ```
 
 Logs:
 
 ```
-logs/<execution-id>.log
+logs/agent-<timestamp>-<id>.log
 ```
 
 ## Next Steps
