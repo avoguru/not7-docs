@@ -70,6 +70,27 @@ Every execution includes a `react_trace` showing:
 - Each thinking step
 - Time and cost per iteration
 
+**ReAct with Tools:**
+
+Enable tool calling in ReAct nodes by setting `tools_enabled: true` and providing a tool provider:
+
+```json
+{
+  "id": "search_emails",
+  "type": "react",
+  "tools_enabled": true,
+  "config": {
+    "tools": {
+      "provider": "arcade-gmail"
+    }
+  },
+  "react_goal": "Search for unread emails from yesterday",
+  "max_iterations": 5
+}
+```
+
+The agent will autonomously call tools during reasoning to accomplish its goal
+
 ### LLM Node
 
 Simple single-pass LLM processing.
@@ -97,22 +118,38 @@ Simple single-pass LLM processing.
 }
 ```
 
-### Tool Node (Roadmap)
+### Tool Node
 
-Execute external tools via MCP protocol.
+Execute external tools directly. Supports Arcade.dev toolkits (Gmail, Google Maps, Calendar, etc.)
 
-**Example (future):**
+**Required fields:**
+- `id` - Unique ID
+- `type` - Must be `"tool"`
+- `tool_name` - Name of the tool to execute
+- `tool_arguments` - Arguments for the tool
+- `config.tools.provider` - Tool provider (e.g., `"arcade-gmail"`)
+
+**Example (Send Email):**
 ```json
 {
-  "id": "fetch_data",
+  "id": "send_email",
   "type": "tool",
-  "tool": {
-    "server": "database",
-    "name": "query",
-    "params": {"sql": "SELECT * FROM users"}
+  "config": {
+    "tools": {
+      "provider": "arcade-gmail"
+    }
+  },
+  "tool_name": "SendEmail",
+  "tool_arguments": {
+    "recipient": "user@example.com",
+    "subject": "Test Email",
+    "body": "{{input}}"
   }
 }
 ```
+
+**Argument Placeholders:**
+Use `"{{input}}"` to pass the output from the previous node as an argument.
 
 ### Transform Node (Roadmap)
 
@@ -194,6 +231,48 @@ Override global LLM config per node:
   "prompt": "Write creatively..."
 }
 ```
+
+### Per-Node Tool Configuration
+
+Each node can specify its own tool provider, enabling multi-toolkit agents:
+
+```json
+{
+  "nodes": [
+    {
+      "id": "find_restaurants",
+      "type": "react",
+      "tools_enabled": true,
+      "config": {
+        "tools": {
+          "provider": "arcade-googlemaps"
+        }
+      },
+      "react_goal": "Find 3 restaurants"
+    },
+    {
+      "id": "send_email",
+      "type": "tool",
+      "config": {
+        "tools": {
+          "provider": "arcade-gmail"
+        }
+      },
+      "tool_name": "SendEmail",
+      "tool_arguments": {
+        "recipient": "user@example.com",
+        "subject": "Restaurant Recommendations",
+        "body": "{{input}}"
+      }
+    }
+  ]
+}
+```
+
+**Benefits:**
+- Use different toolkits in the same agent (Maps + Gmail + Calendar)
+- Node-level config overrides agent-level config
+- Tool managers are pooled and reused for efficiency
 
 ## Multiple Nodes
 

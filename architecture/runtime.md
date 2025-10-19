@@ -4,6 +4,34 @@
 
 NOT7 runtime consists of a unified execution engine that handles all agent executions through a single code path, whether initiated via CLI or HTTP API.
 
+## Architecture Diagram
+
+```
+            ┌───────────────────────────────┐
+            │     USER / DEVELOPER          │
+            └───────────────┬───────────────┘
+                            ↓
+            ┌───────────────────────────────┐
+            │   JSON Agent Definition       │
+            │   (nodes, routes, config)     │
+            └───────────────┬───────────────┘
+                            ↓
+            ┌───────────────────────────────┐
+            │   NOT7 CORE RUNTIME           │
+            │   Executor Engine             │
+            └───────────────┬───────────────┘
+                            ↓
+        ┌───────────────────┼───────────────────┐
+        ↓                   ↓                   ↓
+┌───────────────┐  ┌────────────────┐  ┌───────────────┐
+│ LLM Provider  │  │ Tool Providers │  │    Storage    │
+│               │  │                │  │               │
+│ - OpenAI      │  │ - Native       │  │ - Executions  │
+│ - GPT-4/3.5   │  │ - Arcade       │  │ - Traces      │
+│               │  │   (Gmail, Maps)│  │ - Logs        │
+└───────────────┘  └────────────────┘  └───────────────┘
+```
+
 ## Core Components
 
 ```

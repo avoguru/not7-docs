@@ -72,6 +72,47 @@ Output:
 
 Output shows the agent execution with timing and cost.
 
+## Try Arcade Integration (Google Services)
+
+**NEW:** Try the multi-toolkit demo using Google Maps + Gmail:
+
+### Setup Arcade
+
+Add to your `not7.conf`:
+
+```ini
+# Arcade.dev Integration
+ARCADE_API_KEY=your-api-key-here
+ARCADE_USER_ID=your-user-id-here
+```
+
+Get your credentials from [arcade.dev](https://arcade.dev)
+
+### Authorize Google Services
+
+Run the one-time interactive OAuth authorization:
+
+```bash
+./not7 authorize
+```
+
+This will display a URL - open it in your browser to authorize Google services.
+
+### Run Multi-Toolkit Demo
+
+**Important:** First edit `examples/arcade-lunch-demo.json` and update the email recipient from `user@example.com` to your actual email address!
+
+```bash
+./not7 run examples/arcade-lunch-demo.json
+```
+
+This agent will:
+1. Use Google Maps to find 3 lunch restaurant recommendations
+2. Format them nicely
+3. Use Gmail to send you an email with the recommendations
+
+The agent uses **2 different toolkits in one workflow** - demonstrating per-node toolkit configuration!
+
 ## Execution Modes
 
 ### Synchronous (Default)
